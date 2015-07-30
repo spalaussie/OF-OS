@@ -1,0 +1,115 @@
+<div class="item-list right-checkout">
+    <div class="list-image">
+        <img ng-src="{{item.image}}" alt="">
+    </div>
+    <div class="all-details">
+        <div class="visible-option">
+            <div class="details">
+                <p><strong><a href="dish.html">{{item.name}}</a>
+                </strong></p>
+                <ul class="share-this list-inline text-right">
+                    <li><a href="#">Share</a>
+                        <ul class="list-inline">
+                            <li><a href="#"><i class="fa fa-facebook-square"></i></a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-twitter-square"></i></a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-google-plus-square"></i></a>
+                            </li>
+                            <li><a href="#"><i class="fa fa-pinterest-square"></i></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="m-with-details"><strong>Description:</strong><br>{{item.description}}</p>
+                <p class="for-list">{{item.description}}</p>
+                <div class="pull-right">
+                    <span><strong>Spicy ?</strong></span>
+                    <input type="radio" id="spicy1" ng-modal="cartItems.spicy" value="mild"> <img  ng-src="modules/core/template/img/content/spicy-1.png" style="width:50% height:50%" alt="">
+                    <input type="radio" id="spicy1" ng-modal="cartItemsspicy" value="medium"><img ng-src="modules/core/template/img/content/spicy-2.png" alt="">
+                    <input type="radio" id="spicy" ng-modal="cartItemsspicy" value="hot"><img ng-src="modules/core/template/img/content/spicy-3.png" alt="">
+                </div>
+
+            </div>
+
+            <div class="price-option fl">
+                <h4>{{item.price|currency}}</h4>
+                <button class="toggle">Option</button>
+            </div>
+            <!-- end .price-option-->
+            <div class="qty-cart text-center clearfix">
+                <h6>Qty</h6>
+                <form class="">
+                    <input type="text" ng-model="qty" id="qty" name="qty" placeholder="1">
+                    <br>
+                    <button ng-click="addItem(item,qty,spicy)"><i class="fa fa-shopping-cart"></i>
+                    </button>
+                </form>
+            </div> <!-- end .qty-cart -->
+        </div> <!-- end .visible-option -->
+
+        <div class="dropdown-option clearfix">
+            <div class="dropdown-details">
+                <form class="default-form">
+                    <h5>Please Select Your Option</h5>
+                    <h6>Option</h6>
+                        <span class="radio-input">
+                            <input type="radio" id="rice-1" name="choose">
+                            <label for="rice-1">Rice</label>
+                        </span>
+
+                        <span class="radio-input">
+                            <input type="radio" id="noodles-1" name="choose">
+                            <label for="noodles-1">Noodles</label>
+                        </span>
+
+                        <span class="radio-input">
+                            <input type="radio" id="bread-1" name="choose">
+                            <label for="bread-1">Bread</label>
+                        </span>
+
+                    <h6>Extras</h6>
+                        <span class="checkbox-input">
+                            <input type="checkbox" id="shrimps-1">
+                            <label for="shrimps-1">Double Shrimps<i class="fa fa-plus price">$3.00</i>
+                            </label>
+                        </span>
+
+                        <span class="checkbox-input">
+                            <input type="checkbox" id="extra-veggies-1">
+                            <label for="extra-veggies-1">Extra Veggies <i class="fa fa-plus price">$3.00</i>
+                            </label>
+                        </span>
+
+                        <span class="checkbox-input">
+                            <input type="checkbox" id="additional-butter-1">
+                            <label for="additional-butter-1">Additional Butter <i class="fa fa-plus price">$3.00</i>
+                            </label>
+                        </span>
+
+                    <h6>Additional Notes</h6>
+                    <textarea placeholder="Write here"></textarea>
+
+                    <a class="btn btn-default-red">Confirm</a>
+                    <a class="btn btn-default-black">Cancle</a>
+                </form>
+            </div>
+            <!--end .dropdown-details-->
+        </div>
+        <!--end .dropdown-option-->
+    </div>
+    <!-- end .all-details -->
+</div>
+<script>
+    var isLoaded = 0; //Set the flag OFF
+
+    $(document).ready(function() {
+            if(isLoaded){ //If flag is ON then return false
+                alert("File already loaded");
+                return false;
+            }
+            $.getScript('modules/core/template/js/scripts.js', function() {
+                isLoaded = 1; //Turn ON the flag
+            });
+    });
+</script>

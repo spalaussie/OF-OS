@@ -1,0 +1,198 @@
+
+<div   id="page-content" data-ng-controller="MenuController"  data-ng-init="find()" >
+
+    <!-- start #main-wrapper -->
+    <div class="bg-menu" >
+        <!-- This div is used to indicate the original position of the scrollable fixed div. -->
+        <div class="scroller_anchor"></div>
+        <div class="container">
+            <div class="row mt30">
+                <div class="col-md-6 col-md-push-3">
+                    <ul class="nav nav-tabs"  role="tablist">
+                        <li ng-class="active" ng-repeat="cat in categories| unique:'type' | orderBy:'order' "  role="tab" data-toggle="tab">
+                            <a ng-href="" ng-click="linkTo('#{{cat.name}}')" >{{cat.type}}</a>
+                        </li>
+                    </ul>
+
+                    <div class="view-style dsn">
+                        <div class="list-grid-view">
+                            <button class="thumb-view"><i class="fa fa-list"></i></button>
+                            <button class="without-thumb"><i class="fa fa-align-justify"></i></button>
+                            <button class="grid-view"><i class="fa fa-th-list"></i></button>
+                        </div>
+                        <!-- end .list-grid-view -->
+                    </div>
+                    <!-- end view-style -->
+
+                          <div class="tab-content">
+                              <div ng-repeat="menuItem in menuByCategoryItems | orderBy:'Order' ">
+                                  <div class="all-menu-details">
+                                      <div  id="{{menuItem.Name}}" style="margin-bottom: 20px;background-color: #e00000; color: #fff"></div>
+                                      <h5  style="background-color: #e00000; color: #fff; padding: 10px 10px 10px">{{menuItem.Name}}</h5>
+                                      <div class="item-list right-checkout" ng-repeat="item in menuItem.Items">
+                                          <div class="list-image">
+                                              <img ng-src="{{item.image}}" alt="">
+                                          </div>
+                                          <div class="all-details">
+                                              <div class="visible-option">
+                                                  <div class="details">
+                                                      <p><strong><a href="dish.html">{{item.name}} <span ng-show="item.isSpicy"><img  ng-src="modules/core/template/img/content/mild.png" alt="spicy"> </span></a>
+                                                      </strong></p>
+                                                      <ul class="share-this list-inline text-right">
+                                                          <li><a href="#">Share</a>
+                                                              <ul class="list-inline">
+                                                                  <li><a href="#"><i class="fa fa-facebook-square"></i></a>
+                                                                  </li>
+                                                                  <li><a href="#"><i class="fa fa-twitter-square"></i></a>
+                                                                  </li>
+                                                                  <li><a href="#"><i class="fa fa-google-plus-square"></i></a>
+                                                                  </li>
+                                                                  <li><a href="#"><i class="fa fa-pinterest-square"></i></a>
+                                                                  </li>
+                                                              </ul>
+                                                          </li>
+                                                      </ul>
+                                                      <p class="m-with-details"><strong>Description:</strong><br>{{item.description}}</p>
+                                                      <p class="for-list">{{item.description}}</p>
+                                                      <div class="pull-right" style="position: absolute;right: 0;bottom: 0;" ng-show="item.spicy">
+                                                          <span><strong>Spicy ?</strong></span>
+                                                          <label ng-repeat="spice in spicy">
+                                                              <input type="radio"
+                                                                     name="spicy"
+                                                                     ng-modal="item.menuOptions.spicy"
+                                                                      ng-click="getSpicy(item,spice)"/>
+                                                              <img  ng-src="modules/core/template/img/content/{{spice}}.png" style="width:50% height:50%" alt="">
+                                                          </label>
+                                                      </div>
+
+                                                  </div>
+
+                                                  <div class="price-option fl">
+                                                      <h4 ng-show="!item.menuOptions.length>0">{{item.price|currency}}</h4>
+                                                      <button ng-show="item.menuOptions.length>0" class="toggle" button-toggle>Option</button>
+                                                  </div>
+                                                  <!-- end .price-option-->
+                                                  <div class="qty-cart text-center clearfix">
+                                                      <h6>Qty</h6>
+                                                      <form class="">
+                                                          <input type="text" ng-model="qty" id="qty" name="qty" placeholder="1">
+                                                          <br>
+                                                          <button ng-disabled="item.menuOptions.length>0" ng-click="addItem(qty,item)"><i class="fa fa-shopping-cart"></i>
+                                                          </button>
+                                                      </form>
+                                                  </div> <!-- end .qty-cart -->
+                                              </div> <!-- end .visible-option -->
+
+                                              <div class="dropdown-option clearfix" >
+                                                  <div class="dropdown-details">
+
+                                                      <form class="default-form">
+                                                          <div class="general-info cart-qty">
+                                                              <h5>Please Select Your Option</h5>
+                                                              <ul class="list-unstyled ">
+                                                                  <li ng-repeat="optionItem in item.menuOptions  | orderBy: 'price'">
+                                                                      <span class="value"><strong>{{optionItem.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{optionItem.price| currency}}</strong> </span>
+                                                                      <span class="result">
+                                                                          <button class="btn btn-default-red" ng-click="addItem(0,item,optionItem)">
+                                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                          </button>
+                                                                      </span>
+                                                                  </li>
+                                                              </ul>
+                                                          </div>
+                                                      </form>
+                                                  </div>
+                                                  <!--end .dropdown-details-->
+                                              </div>
+                                              <!--end .dropdown-option-->
+                                          </div>
+                                          <!-- end .all-details -->
+                                      </div>
+                                      <!-- end .item-list -->
+                                  </div>
+                                  <!--end all-menu-details-->
+
+                              </div > <!-- end .tab-pane -->
+
+                        </div>
+
+                    <!--end main-grid layout-->
+                </div>
+                <!-- Side-panel begin -->
+                <div class="col-md-3 col-sm-12 col-xs-12 col-md-pull-6">
+                    <div class="side-panel scroller" style="width:265px;">
+                        <form class="default-form">
+                            <h6>Categories</h6>
+                            <!-- end .sd-side-panel class -->
+                            <div class="category">
+
+                                <div class="toggle-content">
+                                    <h5 ng-repeat="cat in categories| unique:'name' | orderBy:'order' " class="toggle-title">
+                                        <strong> <a ng-href="" ng-click="linkTo('#{{cat.name}}')" > {{cat.name}}</a></strong>
+                                        <!-- href="" ng-click="linkTo('/#about')" -->
+                                    </h5>
+                                </div>
+                            </div>
+                            <!--end .category-->
+                            <div class="find-on-map">
+                                <h5>Our Location</h5>
+                                <div class="banner-search">
+                                    <div class="banner-search-inner">
+                                            <div class="map-section">
+                                            <div id="map_canvas"></div>
+                                        </div>
+                                        <!-- end .map-section -->
+                                    </div>
+                                    <!-- end .banner-search-inner -->
+                                </div>
+                                <!-- end .banner-search -->
+                            </div>
+                            <!-- end .find-on-map -->
+                        </form>
+                        <!-- end form -->
+                    </div>
+                    <!-- end side-panel -->
+                </div>
+                <!--end .col-md-3 -->
+                <div class="col-md-3">
+                    <div class="my-check-right scroller" style="width:265px;">
+                        <h5 class="toggle-title">My Check</h5>
+                        <ul class="list-unstyled">
+                            <h5  ng-hide="cart.length>0">Your cart is empty </h5>
+                            <li ng-repeat="item in cart">
+                                <p style="line-height: 10px">
+                                    <span style="position: absolute; left: 0;top: 10px;margin-left: 5px; color: #e00000; cursor: pointer;">
+                                        <i class="fa fa-minus" ng-click="removeItem(item)"></i>
+                                    </span>
+                                    <span style="margin-left: 25px;display: block"> {{item.Qty}} <strong>x</strong> {{item.Name}}<br /> <span style="color: #e00000;font-weight: bold" ng-hide="!item.Spicy"> {{item.Spicy + " Spicy"}}</span></span>
+                                    <span class="icon-link">
+                                        <i class="fa fa-plus" ng-click="addItem(1,item)"></i>
+                                    </span>
+                                </p>
+
+                                <p class="price" style="right: 0;position: absolute;">{{item.Total|currency}}</p>
+
+                            </li>
+                            <li>
+                                <!-- list for total price-->
+                                <p>Total</p>
+                                <p class="price-total">{{Total|currency}}</p>
+                            </li>
+                        </ul>
+
+                        <div class="checkout">
+                            <a class="btn btn-default-red" href="#"><i class="fa fa-shopping-cart"></i>Checkout</a>
+                        </div>
+
+                    </div>
+                    <!-- end .chekout class -->
+                </div>
+            </div>
+            <!-- end .row -->
+        </div>
+    <!--end .container -->
+    </div>
+</div>
+
+
+<script type="text/javascript" src="modules/core/template/js/scripts.js"></script>

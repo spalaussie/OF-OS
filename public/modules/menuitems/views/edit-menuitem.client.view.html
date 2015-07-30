@@ -1,0 +1,114 @@
+<div  id="page-content"  class="container"   data-ng-controller="MenuitemsController" data-ng-init="findOne()">
+    <div class="page-header">
+        <h1>Edit Menuitem</h1>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="update()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="name">Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="menuitem.name" id="name" class="form-control" placeholder="Name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="name">Description</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="menuitem.description" id="description" class="form-control" placeholder="Description" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="price">Price</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="menuitem.price" id="price" class="form-control" placeholder="Price" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="isSpicy">IsSpicy
+                        <input type="checkbox" data-ng-model="menuitem.isSpicy" id="isSpicy" class="form-control">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="category">Category</label>
+                    <div class="controls">
+                        <select ng-model="menuitem.category" placeholder="Category" name="category" id="category">
+                            <option value="">Select Category</option>
+                            <option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="type">Type</label>
+                    <div class="controls">
+                        <label ng-repeat="type in types">
+                            <input
+                                    type="checkbox"
+                                    value="type.name"
+                                    ng-checked="selection.indexOf(type.name) > -1"
+                                    ng-click="toggleSelection(type.name)">
+                            {{type.name}}
+                        </label>
+                        {{type}}
+                    </div>
+                </div>
+
+                <hr />
+                <h3>Options (check the Options to add options to the Item)</h3>
+                <div class="form-group">
+                    <label class="control-label" for="hasOption">Option
+                        <div class="controls">
+                            <input type="checkbox" data-ng-model="menuitem.hasOption" name="hasOption" id="hasOption" class="form-control" />
+                        </div>
+                    </label>
+                </div>
+                    <div class="form-group" ng-show="menuitem.hasOption">
+                        <label class="control-label" for="spicy">Has Spicy Option ?
+                            <div class="controls">
+                                <input type="checkbox" data-ng-model="menuitem.spicy" id="spicy" class="form-control">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="form-group" ng-show="menuitem.hasOption">
+                        <label class="control-label" for="option">Option</label>
+                        <div class="controls">
+                            <select size="10" id="myselection" multiple ng-multiple="true"
+                                    ng-model="o"
+                                    ng-options="o.name+' ('+o.item+')' for o in menuOptions"></select>
+
+                            <a class="btn btn-default-red" ng-click="addOption(o)"><i class="fa fa-shopping-cart"></i> Add this Option</a>
+
+
+                            {{selectedOptions}}
+
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-show="menuitem.hasOption">
+                        <ul class="list-unstyled"  ng-repeat="option in selectedOptions">
+                            <li>
+                                    <label style="background-color: #AAAAAA; padding:5px 5px 5px 5px"> {{option.name}}  {{option.price|currency}}</label>  <span class="icon-link"   style="cursor: pointer;"><i class="fa fa-times" ng-click="removeOption(option)"></i> </span>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="image">Image</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="menuitem.image" id="image" class="form-control" placeholder="Image" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-default">
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</div>
