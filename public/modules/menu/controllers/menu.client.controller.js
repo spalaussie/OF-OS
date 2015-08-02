@@ -2,9 +2,15 @@
 
 // Options controller
 angular.module('menu')
-    .controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Menuitems','GetCategories','GetTypes','GetOptions',
-        function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions) {
+    .controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Menuitems','GetCategories','GetTypes','GetOptions','ReturnUrl',
+        function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions,ReturnUrl) {
             $scope.authentication = Authentication;
+
+            $scope.setUrl=function(url){
+                ReturnUrl.setUrl(url);
+                $location.path(decodeURI(url));
+            };
+
 
             //*********************************************************//
             //********************Read Query strings************************//
