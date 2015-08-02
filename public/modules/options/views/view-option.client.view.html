@@ -5,7 +5,7 @@
 		<strong><label>Spicy <input ng-disabled="true"  type="checkbox"  ng-model="option.spicy" /></label></strong>
 		<h3>Price:</h3> <strong><p  data-ng-bind="option.price"></p></strong>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == option.user._id))">
+	<div class="pull-right" data-ng-show="isAdmin()">
 		<a class="btn btn-primary" href="/#!/options/{{option._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>

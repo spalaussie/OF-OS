@@ -5,6 +5,19 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 	function($scope, $stateParams, $location, Authentication, Categories) {
 		$scope.authentication = Authentication;
 
+
+		// check if user is admin
+
+		$scope.isAdmin=function(){
+			if($scope.authentication.user.roles[0]==='admin'){
+				return true;
+			}else{
+				return
+				false;
+			}
+		};
+
+
 		// Create new Category
 		$scope.create = function() {
 			// Create new Category object

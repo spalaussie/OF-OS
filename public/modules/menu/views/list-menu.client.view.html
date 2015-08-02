@@ -156,10 +156,25 @@
                 <!--end .col-md-3 -->
                 <div class="col-md-3">
                     <div class="my-check-right scroller" style="width:265px;">
-                        <h5 class="toggle-title">My Check</h5>
+                        <div class="toggle-content">
+                        <h5 class="toggle-title" style="padding: 20px 20px; text-align: left; ">
+                           Suburb:  <select ng-disabled="!status" data-ng-model="engineer.currentActivity"
+                                    data-ng-options="area for area in areas">
+                            </select><br />
+                               <label>
+                                   <input type="radio" name="delivery" ng-modal="deliveryType" value="delivery" ng-click="changeStatus('delivery')">
+                                   Delivery
+                               </label>
+
+                                <label style="padding-left: 20px">
+                                    <input type="radio" name="delivery" ng-modal="deliveryType" value="takeaway" ng-click="changeStatus('takeaway')">
+                                    Take Away
+                                </label>
+                            </h5>
+                        </div>
                         <ul class="list-unstyled">
-                            <h5  ng-hide="cart.length>0">Your cart is empty </h5>
-                            <li ng-repeat="item in cart">
+                            <h5  ng-hide="cart.items.length>0">Your cart is empty </h5>
+                            <li ng-repeat="item in cart.items">
                                 <p style="line-height: 10px">
                                     <span style="position: absolute; left: 0;top: 10px;margin-left: 5px; color: #e00000; cursor: pointer;">
                                         <i class="fa fa-minus" ng-click="removeItem(item)"></i>
@@ -181,7 +196,7 @@
                         </ul>
 
                         <div class="checkout">
-                            <a class="btn btn-default-red" href="#"><i class="fa fa-shopping-cart"></i>Checkout</a>
+                            <a class="btn btn-default-red" href="#!/userdetails/?returnUrl=userdetails"><i class="fa fa-shopping-cart"></i>Checkout</a>
                         </div>
 
                     </div>

@@ -12,7 +12,7 @@
 		<h3>Image:</h3> <strong><p  data-ng-bind="menuitem.image"></p></strong>
 
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == menuitem.user._id))">
+	<div class="pull-right" data-ng-show="isAdmin()">
 		<a class="btn btn-primary" href="/#!/menuitems/{{menuitem._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>

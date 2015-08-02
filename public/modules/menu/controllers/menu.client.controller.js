@@ -26,7 +26,19 @@ angular.module('menu')
                 loadCategories();
                // loadTypes();
                // loadOptions();
+              $scope.deliveryType = 'delivery';
             }
+            $scope.areas =
+                [
+                    "Westmead",
+                    "Wentworthville",
+                    "Parramatta",
+                    "Pendel Hill"
+                ];
+             $scope.changeStatus = function(deliveryType){
+                 $scope.deliveryType = deliveryType;
+                     $scope.cart.Delivery = deliveryType;
+             }
 
 //******************************************************************************************************************//
             //*******************************************************ShoppingCart**********************************************//
@@ -37,35 +49,61 @@ angular.module('menu')
             $scope.selectedSpicy;
             $scope.spicy=["Mild", "Medium", "Hot"];
             /* create an item for the cart */
-            $scope.cartItem={
+
+            $scope.cart={
+                Delivery:'',
+                Suburb:'',
+                items:[],
+                Total:0.00
+            };
+            var cartItem={
+                Name:'',       // Name of the itemQty:0,        // Quantity of the Item
+                Price:0.00,  // Price of Item
+                Option:'', // option ie. Half/Full, 4 pieces/ 6 pieces
+                Spicy:'' // option how much spicy
+            };
+
+           /* var cartItem={
                 Name:'',       // Name of the item
                 Qty:0,        // Quantity of the Item
                 Price:0.00,  // Price of Item
                 Option:'', // option ie. Half/Full, 4 pieces/ 6 pieces
-                Spicy:false, // option how much spicy
+                Spicy:'', // option how much spicy
+                Delivery:'',
+                Suburb:'',
                 Total:0.00
 
-            };
+            };*/
+            /* initialise the cart */
             /* initialise the cart */
             function initCart()
             {
-                var menuByCategory1={};
-                menuByCategory1.Name='';
-                menuByCategory1.Type='';
-                menuByCategory1.Order='';
-                menuByCategory1.Items=[];
-                return menuByCategory1;
+                cartItem={};
+                cartItem.Name='';
+                cartItem.Qty = 0,
+                cartItem.Price = 0.00,
+                cartItem.Option = '',
+                cartItem.Spicy = ''
+                return cartItem;
+
+                /*var menuByCategory1={};
+                 menuByCategory1.Name='';
+                 menuByCategory1.Type='';
+                 menuByCategory1.Order='';
+                 menuByCategory1.Items=[];
+                 return menuByCategory1;*/
             }
 
-            /* Cart */
-            $scope.cart=[];
 
-            var cartItem={};
+            /* Cart */
+            //$scope.cart=[];
+
+           // var cartItem={};
             $scope.addItem=function(Qty,item,option){
 
                 var cartItem=initCart();
                 if(Qty>0 && !option) {
-                    var idx=cartItemExists($scope.cart,item);
+                    var idx=cartItemExists($scope.cart.items,item);
                     if ( idx== -1) {
                         cartItem.Name = item.name;
                         cartItem.Qty=Qty; // get the Qty to to cart for items Total calculation
@@ -74,9 +112,9 @@ angular.module('menu')
                         //cartItem.Option = option;
                         cartItem.Total=  Qty*item.price; //calculate particular items Total
 
-                        $scope.cart.push(cartItem); //add to thr cart
+                        $scope.cart.items.push(cartItem); //add to thr cart
                     }else{
-                        cartItem=$scope.cart[idx];
+                        cartItem=$scope.cart.items[idx];
                         var qty=parseInt(cartItem.Qty)+parseInt(Qty);
                         cartItem.Qty=qty;
                         //cartItem.Spicy=item.spicy;
@@ -85,7 +123,7 @@ angular.module('menu')
 
                     //$scope.cart.push(cartItem);
                 }else{
-                    var idx=cartOptionExists($scope.cart,option);
+                    var idx=cartOptionExists($scope.cart.items,option);
                     if ( idx== -1) {
                         cartItem.Qty=1;
                         cartItem.Name = option.item+" "+option.name;
@@ -93,9 +131,9 @@ angular.module('menu')
                         cartItem.Price = option.price; // get the price to the cart  for items Total calculation
                         cartItem.Total=  option.price; //calculate particular items Total
 
-                        $scope.cart.push(cartItem); //add to thr cart
+                        $scope.cart.items.push(cartItem); //add to thr cart
                     }else{
-                        cartItem=$scope.cart[idx];
+                        cartItem=$scope.cart.items[idx];
                         var qty=parseInt(cartItem.Qty)+1;
                         cartItem.Qty=qty;
                         //cartItem.Spicy=option.spicy;
@@ -104,7 +142,7 @@ angular.module('menu')
                 }
 
                 // calculate the cart total
-                calculateTotal($scope.cart);
+                calculateTotal($scope.cart.items);
             };
 
             $scope.getSpicy=function(item,spicy){
@@ -122,17 +160,17 @@ angular.module('menu')
             //******* Remove the item from the Cart ****************//
             //*******************************************************//
             $scope.removeItem=function(cartItem){
-                var index =cartItemExists($scope.cart,cartItem);
+                var index =cartItemExists($scope.cart.items,cartItem);
                 if(index>-1) {
-                    if($scope.cart[index].Qty>=2) { // check if item count is one. if it is greater than 1 then just decrease the Quantity by 1.
-                        $scope.cart[index].Qty -= 1;
-                        $scope.cart[index].Total -= cartItem.Price;
+                    if($scope.cart.items[index].Qty>=2) { // check if item count is one. if it is greater than 1 then just decrease the Quantity by 1.
+                        $scope.cart.items[index].Qty -= 1;
+                        $scope.cart.items[index].Total -= cartItem.Price;
                         calculateTotal($scope.cart);
                     }else{ // if Item count is one then remove the item from the cart
-                        $scope.cart[index].Qty -= 1;
-                        $scope.cart[index].Total -= cartItem.Price;
+                        $scope.cart.items[index].Qty -= 1;
+                        $scope.cart.items[index].Total -= cartItem.Price;
                         calculateTotal($scope.cart);
-                        $scope.cart.splice(index,1);
+                        $scope.cart.items.splice(index,1);
                     }
                 }
             };
@@ -142,12 +180,13 @@ angular.module('menu')
             //*********************** Calculate Total ****************//
             //*******************************************************//
 
-            function calculateTotal(cart){
-                $scope.Total=0;
-                angular.forEach(cart,function(item){
+            function calculateTotal(items){
+                $scope.cart.Total=0;
+                angular.forEach(items,function(item){
 
-                    $scope.Total+=item.Total;
+                    $scope.cart.Total+=item.Total;
                 })
+                $scope.Total=$scope.cart.Total;
             }
 
             //*********************************************************//
@@ -338,4 +377,6 @@ angular.module('menu')
 
         }
     })
+
+
 ;

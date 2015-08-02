@@ -6,6 +6,17 @@ angular.module('menuitems')
 		function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions) {
 			$scope.authentication = Authentication;
 
+			// check if user is admin
+
+			$scope.isAdmin=function(){
+				if($scope.authentication.user.roles[0]==='admin'){
+					return true;
+				}else{
+					return
+					false;
+				}
+			};
+
 			//*********************************************************//
 			//********************Read Query strings************************//
 			//*******************************************************//

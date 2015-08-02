@@ -5,6 +5,17 @@ angular.module('options').controller('OptionsController', ['$scope', '$statePara
 	function($scope, $stateParams, $location, Authentication, Options) {
 		$scope.authentication = Authentication;
 
+		// check if user is admin
+
+		$scope.isAdmin=function(){
+			if($scope.authentication.user.roles[0]==='admin'){
+				return true;
+			}else{
+			return
+				false;
+			}
+		};
+
 
 		// Create new Option
 		$scope.create = function() {

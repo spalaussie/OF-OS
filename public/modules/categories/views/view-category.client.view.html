@@ -4,7 +4,7 @@
 		<h4 data-ng-bind="category.type"></h4>
 		<h4 data-ng-bind="category.order"></h4>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == category.user._id))">
+	<div class="pull-right" data-ng-show="isAdmin()">
 		<a class="btn btn-primary" href="/#!/categories/{{category._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>

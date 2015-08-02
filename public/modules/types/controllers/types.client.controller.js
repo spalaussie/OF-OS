@@ -5,6 +5,18 @@ angular.module('types').controller('TypesController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, Types) {
 		$scope.authentication = Authentication;
 
+
+		// check if user is admin
+
+		$scope.isAdmin=function(){
+			if($scope.authentication.user.roles[0]==='admin'){
+				return true;
+			}else{
+				return
+				false;
+			}
+		};
+
 		// Create new Type
 		$scope.create = function() {
 			// Create new Type object
