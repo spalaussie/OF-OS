@@ -2,14 +2,27 @@
 
 // Options controller
 angular.module('menu')
-    .controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Menuitems','GetCategories','GetTypes','GetOptions','ReturnUrl',
-        function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions,ReturnUrl) {
+    .controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Menuitems','GetCategories','GetTypes','GetOptions','ReturnUrl','CartSvc',
+        function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions,ReturnUrl,CartSvc) {
             $scope.authentication = Authentication;
 
+
+            //*********************************************************//
+            //***********Set the Return URL in cookies ***************//
+            //*******************************************************//
             $scope.setUrl=function(url){
+                setCart();
                 ReturnUrl.setUrl(url);
                 $location.path(decodeURI(url));
             };
+
+
+            //*********************************************************//
+            //***************Set the Cart in cookies *****************//
+            //*******************************************************//
+            function setCart(){
+                CartSvc.setCart($scope.cart);
+            }
 
 
             //*********************************************************//

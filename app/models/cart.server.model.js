@@ -10,7 +10,6 @@ var mongoose = require('mongoose'),
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Cart name',
 		trim: true
 	}
 	 // option how much spicy
@@ -21,12 +20,7 @@ var mongoose = require('mongoose'),
  */
 
 var CartSchema = new Schema({
-	name: {
-		type: String,
-		default: '',
-		required: 'Please fill Cart name',
-		trim: true
-	},
+
 	orderNumber: {
 		type: Number
 	},
