@@ -1,24 +1,26 @@
-<div  id="page-content"   class="container"   data-ng-controller="OptionsController" data-ng-init="findOne()">
+<div  id="page-content" data-ng-controller="OptionsController" data-ng-init="findOne()">
+	<div class="container">
 	<div class="page-header">
-		<h3>Name:</h3> <strong><p  data-ng-bind="option.name"></p></strong>
-		<h3>Item:</h3> <strong><p  data-ng-bind="option.item"></p></strong>
-		<strong><label>Spicy <input ng-disabled="true"  type="checkbox"  ng-model="option.spicy" /></label></strong>
-		<h3>Price:</h3> <strong><p  data-ng-bind="option.price"></p></strong>
+			<h3>Name:</h3> <strong><p  data-ng-bind="option.name"></p></strong>
+			<h3>Item:</h3> <strong><p  data-ng-bind="option.item"></p></strong>
+			<strong><label>Spicy <input ng-disabled="true"  type="checkbox"  ng-model="option.spicy" /></label></strong>
+			<h3>Price:</h3> <strong><p  data-ng-bind="option.price"></p></strong>
+		</div>
+		<div class="pull-right" data-ng-show="isAdmin()">
+			<a class="btn btn-primary" href="/#!/options/{{option._id}}/edit">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn btn-primary" data-ng-click="remove();">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+		<small>
+			<em class="text-muted">
+				Posted on
+				<span data-ng-bind="option.created | date:'mediumDate'"></span>
+				by
+				<span data-ng-bind="option.user.displayName"></span>
+			</em>
+		</small>
 	</div>
-	<div class="pull-right" data-ng-show="isAdmin()">
-		<a class="btn btn-primary" href="/#!/options/{{option._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="option.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="option.user.displayName"></span>
-		</em>
-	</small>
 </div>

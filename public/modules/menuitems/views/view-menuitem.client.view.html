@@ -1,31 +1,33 @@
-<div  id="page-content"  class="container"   data-ng-controller="MenuitemsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h3>Name:</h3> <strong><p  data-ng-bind="menuitem.name"></p></strong>
-		<h3>Description:</h3> <strong><p  data-ng-bind="menuitem.description"></p></strong>
-		<h3>Price:</h3> <strong><p  data-ng-bind="menuitem.price"></p></strong>
-		<strong><label>Is Spicy: <input ng-disabled="true"  type="checkbox"  ng-model="menuitem.isSpicy" /></label></strong>
-		<h3>Category:</h3> <strong><p  data-ng-bind="menuitem.category"></p></strong>
-		<h3>Menu Type:</h3><strong><p ng-repeat="type in menuitem.types">{{type.name}}</p></strong>
-		<strong><label>Has Option: <input ng-disabled="true" type="checkbox"  ng-model="menuitem.hasOption" /></label></strong> <br />
-		<strong><label>Has Spicy Option: <input ng-disabled="true"  type="checkbox"  ng-checked="menuitem.spicy" /></label></strong>
-		<div ng-show="menuitem.hasOption"><h3>Menu Options:</h3><strong><p ng-repeat="option in menuitem.menuOptions">{{option.name}}-{{option.price| currency}}<br /></p></strong></div>
-		<h3>Image:</h3> <strong><p  data-ng-bind="menuitem.image"></p></strong>
+<div  id="page-content" data-ng-controller="MenuitemsController" data-ng-init="findOne()">
+	<div class="container">
+		<div class="page-header">
+			<h3>Name:</h3> <strong><p  data-ng-bind="menuitem.name"></p></strong>
+			<h3>Description:</h3> <strong><p  data-ng-bind="menuitem.description"></p></strong>
+			<h3>Price:</h3> <strong><p  data-ng-bind="menuitem.price"></p></strong>
+			<strong><label>Is Spicy: <input ng-disabled="true"  type="checkbox"  ng-model="menuitem.isSpicy" /></label></strong>
+			<h3>Category:</h3> <strong><p  data-ng-bind="menuitem.category"></p></strong>
+			<h3>Menu Type:</h3><strong><p ng-repeat="type in menuitem.types">{{type.name}}</p></strong>
+			<strong><label>Has Option: <input ng-disabled="true" type="checkbox"  ng-model="menuitem.hasOption" /></label></strong> <br />
+			<strong><label>Has Spicy Option: <input ng-disabled="true"  type="checkbox"  ng-checked="menuitem.spicy" /></label></strong>
+			<div ng-show="menuitem.hasOption"><h3>Menu Options:</h3><strong><p ng-repeat="option in menuitem.menuOptions">{{option.name}}-{{option.price| currency}}<br /></p></strong></div>
+			<h3>Image:</h3> <strong><p  data-ng-bind="menuitem.image"></p></strong>
 
+		</div>
+		<div class="pull-right" data-ng-show="isAdmin()">
+			<a class="btn btn-primary" href="/#!/menuitems/{{menuitem._id}}/edit">
+				<i class="glyphicon glyphicon-edit"></i>
+			</a>
+			<a class="btn btn-primary" data-ng-click="remove();">
+				<i class="glyphicon glyphicon-trash"></i>
+			</a>
+		</div>
+		<small>
+			<em class="text-muted">
+				Posted on
+				<span data-ng-bind="menuitem.created | date:'mediumDate'"></span>
+				by
+				<span data-ng-bind="menuitem.user.displayName"></span>
+			</em>
+		</small>
 	</div>
-	<div class="pull-right" data-ng-show="isAdmin()">
-		<a class="btn btn-primary" href="/#!/menuitems/{{menuitem._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="menuitem.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="menuitem.user.displayName"></span>
-		</em>
-	</small>
 </div>

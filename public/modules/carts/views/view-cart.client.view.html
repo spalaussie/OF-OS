@@ -1,6 +1,41 @@
-<div  id="page-content"  class="container"    ng-controller="CartsController">
+<div  id="page-content"  ng-controller="CartsController" data-ng-init="findUserDetails()">
+    <div class="container">
+        <div class="page-header">
+            <h1>Payment for {{userdetails.first_name}}  Order </h1>
+        </div>
+        <div class="col-md-12">
+
+            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" value="2" name="rm">
+                <input type="hidden" name="business" value={{appValues.business}}>
+                <input type="hidden" name="item_name" value="{{itemName}}">
+                <input type="hidden" name="item_number" value="{{itemNumber}}">
+                <input type="hidden" name="amount" value="{{cart.Total}}">
+                <input type="hidden" name="currency_code" value={{appValues.currency_code}}>
+                <input type="hidden" name="cn" value="No comments" >
+                <input type="hidden" name="shipping" value={{appValues.shipping}}>
+                <input type="hidden" name="first_name" value={{userdetails.first_name}}>
+                <input type="hidden" name="middle_name" value="{{userdetails.middle_name}}">
+                <input type="hidden" name="last_name" value="{{userdetails.last_name}}">
+                <input type="hidden" name="email" value="{{email}}">
+                <input type="hidden" name="address_override" value="1">
+                <input type="hidden" name="address1" value="{{userdetails.address1}}">
+                <input type="hidden" name="address2" value="{{userdetails.address2}}">
+                <input type="hidden" name="city" value="{{userdetails.city}}">
+                <input type="hidden" name="state" value="{{userdetails.state}}">
+                <input type="hidden" name="zip" value="{{userdetails.zip}}">
+                <input type="hidden" name="country" value={{appValues.country}}>
+                <input type="hidden" name="night_phone_a" value={{userdetails.country}}>
+                <input type="hidden" name="return" value={{'http://dev.rajmahalonline.com.au:3000'+appValues.return}}>
+
+                <input type="hidden" value="PP-BuyNowBF" name="bn">
+                <input type="submit" value="Place Order!" name="finalizeOrder" id="finalizeOrder" class="submitButton">
 
 
+            </form>
 
+        </div>
+    </div>
 </div>
 <!-- end page-content -->

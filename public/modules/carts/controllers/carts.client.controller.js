@@ -2,53 +2,65 @@
 
 // Carts controller
 angular.module('carts')
-	.controller('CartsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Carts',
-	function($scope, $stateParams, $location, Authentication, Carts) {
+	.controller('CartsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Carts','Userdetails','CartSvc','Appsettings','Order',
+	function($scope, $stateParams, $location, Authentication, Carts,Userdetails, CartSvc, Appsettings) {
 		$scope.authentication = Authentication;
 
-		$scope.colors = [{name: 'black',shade: 'dark'},{name: 'white',shade: 'light'},{name: 'red',shade: 'dark'},{name: 'blue',shade: 'dark'},{name: 'yellow', shade: 'light'}
-		];
-		$scope.selectedColors=[];
-		angular.forEach($scope.colors, function(color,index){
-			if(index==1 || index==3){
-				$scope.selectedColors.push({
-					name:color.name,
-					shade:color.shade
-				})
-			}
+		$scope.cart= JSON.parse(CartSvc.getCart());
+
+		$scope.settings=Appsettings.query().$promise.then(function(data) {
+			var settings = data;
+			angular.forEach(settings, function(item){
+				switch(item.name){
+					case 'business':
+						$scope.appValues.business=item.value;
+						break;
+					case 'country':
+						$scope.appValues.country=item.value;
+						break;
+					case 'currency_code':
+						$scope.appValues.currency_code=item.value;
+						break;
+					case 'shipping':
+						$scope.appValues.shipping=item.value;
+						break;
+					case 'return':
+						$scope.appValues.return=item.value;
+						break;
+					case 'tax':
+						$scope.appValues.tax=item.value;
+						break;
+					case 'cccharge':
+						$scope.appValues.cccharge=item.value;
+						break;
+				}
+			})
 		});
 
-
-
-		$scope.selectedColors1=[];
-
-
-		for(var i=0;i< $scope.colors.length;i++)
-		{
-			if(i==1 || i==3){
-				$scope.selectedColors1.push($scope.colors[i]);
-			}
+		$scope.appValues={
+			business:'',
+			country:'',
+			currency_code:'',
+			shipping:'',
+			return:''
 		}
-		//$scope.selectedColors = [$scope.colors[2],$scope.colors[1]];
 
-		$scope.doCustom=function() {
-			$('#myselection').select2();
-		};
+		$scope.itemName="Online Food Order at Rajmahal";
+		$scope.itemNumber=1001;
+		$scope.email=$scope.authentication.user.email;
+
+		// Find a list of Userdetails
+			$scope.findUserDetails = function() {
+				$scope.userdetails = Userdetails.get({
+                    userdetailId: $scope.cart.userDetailsID
+                });
+			};
 
 
-		$scope.users = [
-			{ "id": 1, "name": "Ali" },
-			{ "id": 2, "name": "Sara" },
-			{ "id": 3, "name": "Babak" },
-			{ "id": 4, "name": "Sanaz" },
-			{ "id": 5, "name": "Dariush" }
-		];
-
-		$scope.selectedUserIds = [1,3, 5];
 
 
 		// Create new Cart
-		/*$scope.create = function() {
+		$scope.create = function() {
 			// Create new Cart object
 			var cart = new Carts ({
 				name: this.name
@@ -103,12 +115,12 @@ angular.module('carts')
 			$scope.cart = Carts.get({ 
 				cartId: $stateParams.cartId
 			});
-		};*/
+		};
 	}
 ])
 
 
-	.directive('dropdownMulti', function(){
+	/*.directive('dropdownMulti', function(){
 		return {
 			restrict: 'E',
 			scope: {
@@ -177,5 +189,5 @@ angular.module('carts')
 			};
 		}
 	}
-})
+})*/
 ;

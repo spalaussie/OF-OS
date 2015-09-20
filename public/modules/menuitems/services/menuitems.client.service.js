@@ -46,4 +46,16 @@ angular.module('menuitems').factory('Menuitems', ['$resource',
 			});
 			return resource;
 		}])
+
+	.factory('GetOrders', ['$resource',
+		function($resource) {
+			var resource;
+			resource=$resource('/orders',null,{
+				getOrders:{
+					method:'GET',
+					isArray:true
+				}
+			});
+			return resource;
+		}])
 ;

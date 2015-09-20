@@ -26,8 +26,8 @@
                           <div class="tab-content">
                               <div ng-repeat="menuItem in menuByCategoryItems | orderBy:'Order' ">
                                   <div class="all-menu-details">
-                                      <div  id="{{menuItem.Name}}" style="margin-bottom: 20px;background-color: #e00000; color: #fff"></div>
-                                      <h5  style="background-color: #e00000; color: #fff; padding: 10px 10px 10px">{{menuItem.Name}}</h5>
+                                      <div  id="{{menuItem.Name}}"></div>
+                                      <h5  style="background-color: #591300; color: #fff; padding: 10px 10px 10px">{{menuItem.Name}}</h5>
                                       <div class="item-list right-checkout" ng-repeat="item in menuItem.Items">
                                           <div class="list-image">
                                               <img ng-src="{{item.image}}" alt="">
@@ -35,9 +35,9 @@
                                           <div class="all-details">
                                               <div class="visible-option">
                                                   <div class="details">
-                                                      <p><strong><a href="dish.html">{{item.name}} <span ng-show="item.isSpicy"><img  ng-src="modules/core/template/img/content/mild.png" alt="spicy"> </span></a>
+                                                      <p><strong>{{item.name}} <span ng-show="item.isSpicy"><img  ng-src="modules/core/template/img/content/mild.png" alt="spicy"> </span>
                                                       </strong></p>
-                                                      <ul class="share-this list-inline text-right">
+                                                      <!--<ul class="share-this list-inline text-right">
                                                           <li><a href="#">Share</a>
                                                               <ul class="list-inline">
                                                                   <li><a href="#"><i class="fa fa-facebook-square"></i></a>
@@ -50,39 +50,60 @@
                                                                   </li>
                                                               </ul>
                                                           </li>
-                                                      </ul>
+                                                      </ul>-->
                                                       <p class="m-with-details"><strong>Description:</strong><br>{{item.description}}</p>
                                                       <p class="for-list">{{item.description}}</p>
-                                                      <div class="pull-right" style="position: absolute;right: 0;bottom: 0;" ng-show="item.spicy">
+                                                      <div class="pull-right" style="right: 0;bottom: 0;" ng-show="item.spicy">
                                                           <span><strong>Spicy ?</strong></span>
-                                                          <label ng-repeat="spice in spicy">
-                                                              <input type="radio"
-                                                                     name="spicy"
-                                                                     ng-modal="item.menuOptions.spicy"
-                                                                      ng-click="getSpicy(item,spice)"/>
-                                                              <img  ng-src="modules/core/template/img/content/{{spice}}.png" style="width:50% height:50%" alt="">
-                                                          </label>
+                                                          <form name="spicyOptions{{$index}}">
+                                                              <label ng-repeat="spice in spicyOption.options">
+                                                                  <input type="radio"
+                                                                         id="{{spice.id}}"
+                                                                         name="spiceOptions"
+                                                                         data-ng-model="$parent.selectedSpicy"
+                                                                         value="{{spice.id}}"
+                                                                          ng-click="getSelectedSpicy(spice.id)">
+                                                                  <img  ng-src="{{spice.imgSrc}}" style="width:50% height:50%" alt="{{spice.text}}">
+                                                              </label>
+                                                          </form>
                                                       </div>
 
+
                                                   </div>
 
-                                                  <div class="price-option fl">
-                                                      <h4 ng-show="!item.menuOptions.length>0">{{item.price|currency}}</h4>
-                                                      <button ng-show="item.menuOptions.length>0" class="toggle" button-toggle>Option</button>
+                                                  <div class="options" ng-show="item.menuOptions.length>0">
+
+                                                      <form class="default-form">
+                                                          <div class="general-info cart-qty">
+                                                              <ul class="list-unstyled ">
+                                                                  <li ng-repeat="optionItem in item.menuOptions  | orderBy: 'price'">
+                                                                      <span class="result">
+                                                                          <button class="btn btn-default-red" ng-click="addItem(0,item,optionItem)">
+                                                                              <i class="fa fa-shopping-cart"></i><strong>{{optionItem.name}}&nbsp;&nbsp;&nbsp;{{optionItem.price| currency}}</strong>
+                                                                          </button>
+                                                                      </span>
+                                                                  </li>
+                                                                  </ul>
+                                                          </div>
+                                                      </form>
+                                                  </div>
+
+                                                  <div class="price-option fl" ng-show="!item.menuOptions.length>0">
+                                                      <h4>{{item.price|currency}}</h4>
                                                   </div>
                                                   <!-- end .price-option-->
-                                                  <div class="qty-cart text-center clearfix">
+                                                  <div class="qty-cart text-center clearfix" ng-show="!item.menuOptions.length>0">
                                                       <h6>Qty</h6>
                                                       <form class="">
-                                                          <input type="text" ng-model="qty" id="qty" name="qty" placeholder="1">
+                                                          <input type="text" ng-model="qty" id="qty" name="qty" ng-value="1">
                                                           <br>
-                                                          <button ng-disabled="item.menuOptions.length>0" ng-click="addItem(qty,item)"><i class="fa fa-shopping-cart"></i>
+                                                          <button ng-click="addItem(qty,item)"><i class="fa fa-shopping-cart"></i>
                                                           </button>
                                                       </form>
                                                   </div> <!-- end .qty-cart -->
                                               </div> <!-- end .visible-option -->
 
-                                              <div class="dropdown-option clearfix" >
+                                              <!--<div class="dropdown-option clearfix" >
                                                   <div class="dropdown-details">
 
                                                       <form class="default-form">
@@ -101,8 +122,8 @@
                                                           </div>
                                                       </form>
                                                   </div>
-                                                  <!--end .dropdown-details-->
-                                              </div>
+                                                  &lt;!&ndash;end .dropdown-details&ndash;&gt;
+                                              </div>-->
                                               <!--end .dropdown-option-->
                                           </div>
                                           <!-- end .all-details -->
@@ -155,49 +176,92 @@
                 <!--end .col-md-3 -->
                 <div class="col-md-3">
                     <div class="my-check-right scroller" style="width:265px;">
-                        <div class="toggle-content">
-                        <h5 class="toggle-title" style="padding: 20px 20px; text-align: left; ">
-                           Suburb:  <select ng-disabled="!status" data-ng-model="engineer.currentActivity"
-                                    data-ng-options="area for area in areas">
-                            </select><br />
-                               <label>
-                                   <input type="radio" name="delivery" ng-modal="deliveryType" value="delivery" ng-click="changeStatus('delivery')">
-                                   Delivery
-                               </label>
+                        <form name="cartForm">
+                            <div class="toggle-content">
+                            <h5 class="toggle-title title">
 
-                                <label style="padding-left: 20px">
-                                    <input type="radio" name="delivery" ng-modal="deliveryType" value="takeaway" ng-click="changeStatus('takeaway')">
-                                    Take Away
+                                <label ng-repeat="delType in deliveryType.options">
+                                    <input type="radio"
+                                           id="{{delType.id}}"
+                                           name="delTypeOptions"
+                                           data-ng-model="$parent.selectedDeliveryType"
+                                           value="{{delType.id}}"
+                                           ng-click="changeDeliveryType(delType)">
+                                    {{delType.type}} &nbsp;&nbsp;
                                 </label>
-                            </h5>
-                        </div>
-                        <ul class="list-unstyled">
-                            <h5  ng-hide="cart.items.length>0">Your cart is empty </h5>
-                            <li ng-repeat="item in cart.items">
-                                <p style="line-height: 10px">
-                                    <span style="position: absolute; left: 0;top: 10px;margin-left: 5px; color: #e00000; cursor: pointer;">
-                                        <i class="fa fa-minus" ng-click="removeItem(item)"></i>
-                                    </span>
-                                    <span style="margin-left: 25px;display: block"> {{item.Qty}} <strong>x</strong> {{item.Name}}<br /> <span style="color: #e00000;font-weight: bold" ng-hide="!item.Spicy"> {{item.Spicy + " Spicy"}}</span></span>
-                                    <span class="icon-link">
-                                        <i class="fa fa-plus" ng-click="addItem(1,item)"></i>
-                                    </span>
-                                </p>
 
-                                <p class="price" style="right: 0;position: absolute;">{{item.Total|currency}}</p>
+                                </h5>
+                                <div class="cartDeliveryType" ng-show="selectedDeliveryType==1">
+                                    <strong class="title"> Deliver to:</strong><br />
+                                    <select  id="selectDelivery-suburb" data-ng-model="selectedSuburb" name="suburbs" id="suburbs"  ng-change="updateCartWithSuburb()" required>
+                                        <option value="">Select Suburb</option>
+                                        <option ng-repeat="sub in suburbs.options" value="{{sub.suburb}}">{{sub.suburb}}</option>
+                                    </select>
+                                </div>
 
-                            </li>
-                            <li>
-                                <!-- list for total price-->
-                                <p>Total</p>
-                                <p class="price-total">{{Total|currency}}</p>
-                            </li>
-                        </ul>
+                                <div class="cartDeliveryType" >
+                                    <strong class="title"> Requested for:</strong><br />
+                                    <select  id="selectDelivery-time" data-ng-model="selectedDelTime" name="suburbs" id="suburbs"  ng-change="updateCartWithTime()" required>
+                                        <option value="">Select Time</option>
+                                        <option ng-repeat="deltime in deliveryTime" value="{{deltime.time}}">{{deltime.time}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled">
+                                <p ng-hide="cart.items.length>0"><strong>Your cart is empty</strong> </p>
+                                <li ng-repeat="item in cart.items">
+                                    <p style="line-height: 20px">
+                                        <span style="position: absolute; left: 0;top: 10px;margin-left: 5px;  cursor: pointer;">
+                                            <i class="fa fa-minus" ng-click="removeItem(item)"></i>
+                                        </span>
+                                        <span style="margin-left: 25px;display: block"> {{item.Qty}} <strong>x</strong> {{item.Name}}<br /> <span style="font-weight: bold;color: #e00000 " ng-hide="!item.Spicy"> {{item.Spicy + " spicy"}}</span></span>
+                                        <span class="icon-link">
+                                            <i class="fa fa-plus" ng-click="addItem(1,item)"></i>
+                                        </span>
+                                    </p>
 
-                        <div class="checkout">
-                            <a class="btn btn-default-red" ng-click="setUrl('userdetails')"><i class="fa fa-shopping-cart"></i>Checkout</a>
-                        </div>
+                                    <p class="price" style="right: 0;position: absolute;">{{item.Total|currency}}</p>
 
+                                </li>
+                                <li>
+                                    <!-- list for total price-->
+                                    <p><strong>Sub Total</strong></p>
+                                    <p class="price-total">{{subTotal|currency}}</p>
+                                </li>
+                                <li>
+                                    <!-- list for total price-->
+                                    <p style="line-height: 20px">
+                                            <span style="margin-left: 25px;display: block">Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> Online Ordering</span></span>
+                                    </p>
+                                    <p class="price-total">{{discount|currency}}</p>
+                                </li>
+                                <li ng-show="isFirstOrder">
+                                    <!-- list for total price-->
+                                    <p><strong>Sub Total after discount</strong></p>
+                                    <p class="price-total">{{subTotalDiscount|currency}}</p>
+                                </li>
+                                <li ng-show="isFirstOrder">
+                                    <!-- list for total price-->
+                                    <p style="line-height: 20px">
+                                        <span style="margin-left: 25px;display: block">Welcome Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> First Online Order</span></span>
+                                    </p>
+                                    <p class="price-total">{{firstOrderDiscount|currency}}</p>
+                                </li>
+                                <li>
+                                        <p>Delivery fee</p>
+                                        <p class="price-total">{{deliveryFee|currency}}</p>
+                                </li>
+                                <li>
+                                    <!-- list for total price-->
+                                    <p><strong>Total</strong></p>
+                                    <p class="price-total">{{Total|currency}}</p>
+                                </li>
+                            </ul>
+
+                            <div class="checkout">
+                                <a class="btn btn-default-red" ng-click="setUrl('userdetails')" ><i class="fa fa-shopping-cart"></i>Checkout</a>
+                            </div>
+                        </form>
                     </div>
                     <!-- end .chekout class -->
                 </div>
