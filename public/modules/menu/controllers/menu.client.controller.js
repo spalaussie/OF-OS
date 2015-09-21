@@ -62,9 +62,11 @@ angular.module('menu')
             //***********Set the Return URL in cookies ***************//
             //*******************************************************//
             $scope.setUrl=function(url){
-                setCart();
-                ReturnUrl.setUrl(url);
-                $location.path(decodeURI(url));
+                if(isOkToSubmit()) {
+                    setCart();
+                    ReturnUrl.setUrl(url);
+                    $location.path(decodeURI(url));
+                }
             };
 
 
@@ -97,17 +99,41 @@ angular.module('menu')
                 loadCategories();
                 $scope.selectedSuburb='';
             }
-            var strMessage=[];
+          //  var strMessage=[];
             $scope.errMessage="";
-            $scope.isOkToSubmit=function(){
-                for(var i=0;i<=strMessage.length-1;i++)
+            function isOkToSubmit(){
+                var strMessage=[];
+                checkSuburb(strMessage);
+               // checkDelTime(strMessage);
+                checkIfCartEmpty(strMessage)
+                checkMinimumOrder(strMessage);
+                $scope.errMessage=strMessage[0];
+
+                if($scope.errMessage){
+                    return false;
+
+                }
+                else{
+                    return true;
+                }
+                /*for(var i=0;i<=strMessage.length-1;i++)
                 {
                     $scope.errMessage=$scope.errMessage+strMessage[i];
-                }
-                return checkIfCartEmpty() && checkMinimumOrder() && checkSuburb() && checkDelTime() ;
-            };
+                }*/
+            }
 
-            function checkIfCartEmpty() {
+            function checkSuburb(strMessage){
+                if($scope.selectedDeliveryType=="1" && (!$scope.selectedSuburb || $scope.selectedSuburb=="") ){
+                    strMessage.push("Please select a Suburb.");
+                }else if($scope.selectedDeliveryType=="1"&& (!$scope.selectedDelTime || $scope.selectedDelTime=="" )){
+                    strMessage.push("Please select delivery time.");
+                }else if($scope.selectedDeliveryType=="2"&& (!$scope.selectedDelTime ||$scope.selectedDelTime=="")){
+                    strMessage.push("Please select time of pickup.");
+                }
+                return false;
+            }
+
+            function checkIfCartEmpty(strMessage) {
                 if ($scope.cart.items.length === 0) {
                     strMessage.push("Please select a food item");
                 }
@@ -118,7 +144,7 @@ angular.module('menu')
                 return false;
             }
 
-            function checkMinimumOrder() {
+            function checkMinimumOrder(strMessage) {
                 if ($scope.subTotal < 32) {
                     strMessage.push("Mimimum Sub Total of $32 excluding delivery fee.");
                 }else{
@@ -128,24 +154,14 @@ angular.module('menu')
                 return false;
             }
 
-            function checkSuburb(){
-                if($scope.selectedDeliveryType=="1" && $scope.selectedSuburb=="" ){
-                    strMessage.push("Please select a Suburb.");
-                }else{
-                    return true;
-                }
-                return false;
-            }
-            function checkDelTime(){
-                if($scope.selectedDeliveryType=="2" && $scope.selectedDelTime=="" ){
-                    strMessage.push("Please select a time to deliver food.");
-                }else{
-                    return true;
-                }
-                return false;
-            }
+
+
+
+
 
             $scope.deliveryTime=getTimeModel(new Date());
+
+
 
            function getTimeModel(tmpDate){
                 var startHrs=18;

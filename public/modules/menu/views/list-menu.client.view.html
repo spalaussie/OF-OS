@@ -176,7 +176,7 @@
                 <!--end .col-md-3 -->
                 <div class="col-md-3">
                     <div class="my-check-right scroller" style="width:265px;">
-                        <form name="cartForm">
+                        <form name="cartForm" novalidate ng-submit="setUrl('userdetails')">
                             <div class="toggle-content">
                             <h5 class="toggle-title title">
 
@@ -233,7 +233,7 @@
                                     <p style="line-height: 20px">
                                             <span style="margin-left: 25px;display: block">Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> Online Ordering</span></span>
                                     </p>
-                                    <p class="price-total">{{discount|currency}}</p>
+                                    <p class="price-total">-{{discount|currency}}</p>
                                 </li>
                                 <li ng-show="isFirstOrder">
                                     <!-- list for total price-->
@@ -245,7 +245,7 @@
                                     <p style="line-height: 20px">
                                         <span style="margin-left: 25px;display: block">Welcome Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> First Online Order</span></span>
                                     </p>
-                                    <p class="price-total">{{firstOrderDiscount|currency}}</p>
+                                    <p class="price-total">-{{firstOrderDiscount|currency}}</p>
                                 </li>
                                 <li>
                                         <p>Delivery fee</p>
@@ -258,9 +258,14 @@
                                 </li>
                             </ul>
 
-                            <div class="checkout">
+                            <!--<div class="checkout">
                                 <a class="btn btn-default-red" ng-click="setUrl('userdetails')" ><i class="fa fa-shopping-cart"></i>Checkout</a>
+                            </div>-->
+                            <div class="error" ng-show="errMessage">{{errMessage}}</div>
+                            <div class="checkout">
+                                <button type="submit" class="btn btn-default-red"><i class="fa fa-shopping-cart"></i>Checkout</button>
                             </div>
+
                         </form>
                     </div>
                     <!-- end .chekout class -->
