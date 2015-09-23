@@ -1,0 +1,26 @@
+<div id="page-content" class="page-content"  data-ng-controller="UserdetailsController" data-ng-init="findOne()">
+    <div class="contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Thank you. Your order has been received.</p>
+                    <ul class="order_details">
+                        <li class="order">
+                            Order:<strong>{{orderRecieved.orderno}}</strong>
+                        </li>
+                        <li class="date">
+                            Date: <strong>September 23, 2015</strong>
+                        </li>
+                        <li class="total">
+                            Total:<strong><span class="amount">{{orderRecieved.total}}</span></strong>
+                        </li>
+                        <li class="method">
+                            Payment method:<strong>Cash on Delivery</strong>
+                        </li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
