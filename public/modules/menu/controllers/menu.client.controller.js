@@ -2,10 +2,11 @@
 
 // Options controller
 angular.module('menu')
-    .controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Menuitems','GetCategories','GetTypes','GetOptions','ReturnUrl','CartSvc','GetOrders',
-        function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions,ReturnUrl,CartSvc,GetOrders) {
+    .controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Menuitems','GetCategories','GetTypes','GetOptions','ReturnUrl','CartSvc','GetOrders','Userdetails', 'GetUserDetails',
+        function($scope, $stateParams, $location, Authentication, Menuitems, GetCategories,GetTypes, GetOptions,ReturnUrl,CartSvc,GetOrders, Userdetails, GetUserDetails) {
             $scope.authentication = Authentication;
-
+            //Get the user info
+            var User=$scope.authentication;
 
             $scope.userOrders=[];
             $scope.isFirstOrder=false;
@@ -61,11 +62,19 @@ angular.module('menu')
             //*********************************************************//
             //***********Set the Return URL in cookies ***************//
             //*******************************************************//
-            $scope.setUrl=function(url){
+
+            var userDetailsData=[];
+
+            $scope.setUrl=function(){
                 if(isOkToSubmit()) {
                     setCart();
-                    ReturnUrl.setUrl(url);
-                    $location.path(decodeURI(url));
+                    if (!User.user) {
+                        var url='userdetails/0/edit'
+                        ReturnUrl.setUrl(url);
+                        $location.path(decodeURI(url));
+                    }
+                    loadUserDetails();
+
                 }
             };
 
@@ -78,9 +87,84 @@ angular.module('menu')
             }
 
 
-            //*********************************************************//
-            //********************Read Query strings************************//
-            //*******************************************************//
+            //********************************************************//
+           //********************Read User Details******************//
+          //******************************************************//
+
+
+
+            // get the user Details
+            function loadUserDetails() {
+                GetUserDetails.getAllUserDetails(function (resource, headers) {
+                    userDetailsData = resource;
+                    checkUserDetails(userDetailsData);
+                });
+            }
+
+            var locationAddr=[];
+            var userDetailsUserId='';
+
+            function checkUserDetails(userDetails){
+                if (User.user && !userDetailsExists(userDetails)) {
+                    // if userDetails are not present
+                    var firstName = User.user.firstName;
+                    var lastName = User.user.lastName;
+                    var UserName= User.user.username;
+                    locationAddr = $scope.cart.Suburb.split(",");
+                    create(firstName, lastName, UserName, locationAddr);
+
+                }
+                else{
+                    $location.path('userdetails/' + userDetailsUserId+'/edit');
+                }
+            }
+
+            function userDetailsExists(userDetails) {
+                if (contains(User.user,userDetails)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+
+
+
+            function contains(user, userDetails) {
+                var i = userDetails.length;
+                while (i--) {
+                    if (userDetails[i].user._id === user._id) {
+                        userDetailsUserId=userDetails[i]._id
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+
+            // Create new Userdetail for current user
+            function create(firstName,lastName, UserName, locationAddr) {
+                // Create new Userdetail object
+                var userdetail = new Userdetails ({
+                    first_name: firstName,
+                    last_name: lastName,
+                    userName: UserName,
+                    suburb:locationAddr[0],
+                    zip:locationAddr[1]
+                });
+
+                // Redirect after save
+                userdetail.$save(function(response) {
+                    $location.path('userdetails/' + response._id+'/edit');
+                    console.log(response._id);
+                    // Clear form fields
+                    //$scope.name = '';
+                }, function(errorResponse) {
+                    console.log(errorResponse.data.message+'222');
+                    $scope.error = errorResponse.data.message;
+                });
+            };
 
 
 
@@ -192,30 +276,30 @@ angular.module('menu')
             $scope.suburbs = {
                 options: [
                             {
-                                id: 1, suburb: "Harris Park 2150", fee:5
+                                id: 1, suburb: "Harris Park, 2150", fee:5
                             },
                             {
-                                id: 2, suburb: "MAYS HILL 2145", fee:0
+                                id: 2, suburb: "MAYS HILL, 2145", fee:0
                             },
                             {
-                                id: 3, suburb: "MERRYLANDS 2160", fee:2
+                                id: 3, suburb: "MERRYLANDS, 2160", fee:2
                             },
                             {
-                                id: 4, suburb: "NORTHMEAD 2152", fee:4
+                                id: 4, suburb: "NORTHMEAD, 2152", fee:4
                             },
                             {
-                                id: 5, suburb: "PARRAMATTA 2150", fee:4
+                                id: 5, suburb: "PARRAMATTA, 2150", fee:4
                             }, {
-                                id: 6, suburb: "PENDLE HILL 2145", fee:5
+                                id: 6, suburb: "PENDLE HILL, 2145", fee:5
                             },
                             {
-                                id: 7, suburb: "SOUTH WENTWORTHVILLE 2145", fee:4
+                                id: 7, suburb: "SOUTH WENTWORTHVILLE, 2145", fee:4
                             },
                             {
-                                id: 8, suburb: "WENTWORTHVILLE 2145", fee:0
+                                id: 8, suburb: "WENTWORTHVILLE, 2145", fee:0
                             },
                             {
-                                id: 9, suburb: "WESTMEAD 2145", fee:0
+                                id: 9, suburb: "WESTMEAD, 2145", fee:0
                             }
                         ]
                 };
