@@ -4,6 +4,8 @@
 angular.module('userdetails').controller('OrderRecievedController', ['$scope', '$stateParams', '$location', 'Authentication', 'Userdetails','GetUserDetails','CartSvc','Orders',
     function($scope, $stateParams, $location, Authentication, Userdetails,GetUserDetails, CartSvc, Orders) {
         $scope.authentication = Authentication;
+        //$scope.sa="sasasasasas";
+
 
 
         loadCartObject();
@@ -14,9 +16,12 @@ angular.module('userdetails').controller('OrderRecievedController', ['$scope', '
             if (cart) {
                 //var returnUrl = returnUrl.getUrl();
                 $scope.Cart = JSON.parse(cart);
-                $scope.Cart.userDetailsID=userDetailsUserId;
+                //$scope.Cart.userDetailsID=userDetailsUserId;
                 CartSvc.setCart($scope.Cart);
                 $scope.delivery=$scope.Cart.Delivery
+                $scope.orderRecieved = Orders.get({
+                 orderId: $scope.Cart.orderId
+                 });
             }
         }
 
@@ -25,7 +30,7 @@ angular.module('userdetails').controller('OrderRecievedController', ['$scope', '
 // Find existing Userdetail
         $scope.findOne = function() {
             $scope.userdetail = Userdetails.get({
-                userdetailId: $stateParams.userdetailId
+                userdetailId: '5603db74c5d021181cb5759a'
             });
         };
     }

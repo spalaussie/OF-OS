@@ -243,7 +243,11 @@ angular.module('menu')
 
 
 
-            $scope.deliveryTime=getTimeModel(new Date());
+           // $scope.deliveryTime=getTimeModel(new Date());
+            $scope.deliveryTime=[{id:1,time:'12:30 AM'},
+                                 {id:2,time:'1:30 PM'},
+                                 {id:3,time:'2:30 PM'}
+                                ];
 
 
 

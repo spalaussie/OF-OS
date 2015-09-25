@@ -3,10 +3,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p>Thank you. Your order has been received.</p>
+                    <p>Thank you. Your order has been received.  {{authentication.user}}</p>
                     <ul class="order_details">
                         <li class="order">
-                            Order:<strong>{{orderRecieved.orderno}}</strong>
+                            Order:<strong>{{orderRecieved.orderno}} {{authentication}}</strong>
                         </li>
                         <li class="date">
                             Date: <strong>September 23, 2015</strong>
