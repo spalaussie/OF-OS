@@ -95,7 +95,7 @@
                                                   <div class="qty-cart text-center clearfix" ng-show="!item.menuOptions.length>0">
                                                       <h6>Qty</h6>
                                                       <form class="">
-                                                          <input type="text" ng-model="qty" id="qty" name="qty" ng-value="1">
+                                                          <input type="text" ng-model="qty" id="qty" name="qty" ng-value="1" />
                                                           <br>
                                                           <button ng-click="addItem(qty,item)"><i class="fa fa-shopping-cart"></i>
                                                           </button>
@@ -193,7 +193,7 @@
                                 </h5>
                                 <div class="cartDeliveryType" ng-show="selectedDeliveryType==1">
                                     <strong class="title"> Deliver to:</strong><br />
-                                    <select  id="selectDelivery-suburb" data-ng-model="selectedSuburb" name="suburbs" id="suburbs"  ng-change="updateCartWithSuburb()" required>
+                                    <select  id="selectDelivery-suburb" data-ng-model="selectedSuburb" name="suburbs" ng-change="updateCartWithSuburb()" required>
                                         <option value="">Select Suburb</option>
                                         <option ng-repeat="sub in suburbs.options" value="{{sub.suburb}}">{{sub.suburb}}</option>
                                     </select>
@@ -201,14 +201,15 @@
 
                                 <div class="cartDeliveryType" >
                                     <strong class="title"> Requested for:</strong><br />
-                                    <select  id="selectDelivery-time" data-ng-model="selectedDelTime" name="suburbs" id="suburbs"  ng-change="updateCartWithTime()" required>
+                                    <select  id="selectDelivery-time" data-ng-model="selectedDelTime" name="suburbs" ng-change="updateCartWithTime()" required>
                                         <option value="">Select Time</option>
                                         <option ng-repeat="deltime in deliveryTime" value="{{deltime.time}}">{{deltime.time}}</option>
                                     </select>
                                 </div>
                             </div>
+                            <p ng-hide="cart.items.length>0"><strong>Your cart is empty</strong> </p>
                             <ul class="list-unstyled">
-                                <p ng-hide="cart.items.length>0"><strong>Your cart is empty</strong> </p>
+
                                 <li ng-repeat="item in cart.items">
                                     <p style="line-height: 20px">
                                         <span style="position: absolute; left: 0;top: 10px;margin-left: 5px;  cursor: pointer;">
@@ -228,25 +229,55 @@
                                     <p><strong>Sub Total</strong></p>
                                     <p class="price-total">{{subTotal|currency}}</p>
                                 </li>
-                                <li>
-                                    <!-- list for total price-->
+                                <!------------ Online Ordering Discount----------------->
+                                <li ng-show="!isEighthOrder">
+
                                     <p style="line-height: 20px">
                                             <span style="margin-left: 25px;display: block">Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> Online Ordering</span></span>
                                     </p>
-                                    <p class="price-total">-{{discount|currency}}</p>
+                                    <p class="price-total">({{discount|currency}})</p>
                                 </li>
-                                <li ng-show="isFirstOrder">
+                                <li ng-show="!isEighthOrder">
                                     <!-- list for total price-->
                                     <p><strong>Sub Total after discount</strong></p>
                                     <p class="price-total">{{subTotalDiscount|currency}}</p>
                                 </li>
+                               <!----------------------------------------------------->
+
+                                <!------------ First Online Order Discount----------------->
+
                                 <li ng-show="isFirstOrder">
                                     <!-- list for total price-->
                                     <p style="line-height: 20px">
                                         <span style="margin-left: 25px;display: block">Welcome Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> First Online Order</span></span>
                                     </p>
-                                    <p class="price-total">-{{firstOrderDiscount|currency}}</p>
+                                    <p class="price-total">({{firstOrderDiscount|currency}})</p>
                                 </li>
+                                <li ng-show="isFirstOrder">
+                                    <!-- list for total price-->
+                                    <p><strong>Sub Total after discount</strong></p>
+                                    <p class="price-total">{{subTotalFirstOrderDiscount|currency}}</p>
+                                </li>
+
+                                <!----------------------------------------------------->
+
+                                <!------------ Eighth Online Order Discount----------------->
+                                <li ng-show="isEighthOrder">
+                                    <!-- list for total price-->
+                                    <p style="line-height: 20px">
+                                        <span style="margin-left: 25px;display: block">Seventh Order Discount <br /> <span style="font-weight: bold;color: #e00000 ">(average of last six orders)</span></span>
+                                    </p>
+                                    <p class="price-total">({{eighthOrderDiscount|currency}})</p>
+                                </li>
+                                <li ng-show="isEighthOrder">
+                                    <!-- list for total price-->
+                                    <!-- list for total price-->
+                                    <p><strong>Sub Total after discount</strong></p>
+                                    <p class="price-total">{{subTotalEigthDiscount|currency}}</p>
+                                </li>
+                                <!----------------------------------------------------->
+
+                                <!----------------- Delivery Fee----------------------->
                                 <li>
                                         <p>Delivery fee</p>
                                         <p class="price-total">{{deliveryFee|currency}}</p>
@@ -256,6 +287,9 @@
                                     <p><strong>Total</strong></p>
                                     <p class="price-total">{{Total|currency}}</p>
                                 </li>
+
+                                <!----------------------------------------------------->
+
                             </ul>
 
                             <!--<div class="checkout">

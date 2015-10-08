@@ -8,6 +8,19 @@ angular.module('menu')
             //Get the user info
             var User=$scope.authentication;
 
+            var deliveryType  = $stateParams.delivery;
+            switch(deliveryType){
+                case 'Takeaway':
+                    $scope.selectedDeliveryType=2;
+                    break;
+                default:
+                    $scope.selectedDeliveryType=1;
+                    break;
+            }
+
+            //$scope.selectedDeliveryType='1';
+
+
             $scope.userOrders=[];
             $scope.isFirstOrder=false;
 
@@ -38,21 +51,36 @@ angular.module('menu')
                         angular.forEach(orders, function (userOrder) {
                             order=initOrder();
                             if($scope.authentication.user._id===userOrder.user._id &&
-                                userOrder.completed && userOrder.transactionId){
+                                userOrder.completed && userOrder.orderno){
                                     order._id=userOrder._id;
                                     order.completed = userOrder.completed;
                                     order.orderno=userOrder.orderno;
-                                    order.total = userOrder.orderno;
+                                    order.total = userOrder.total;
                                     order.transactionId = userOrder.transactionId;
 
                                 userOrders.push(order);
                             }
-                            $scope.userOrders= userOrders;
-                            if(userOrders.length<1)
-                            {
-                                $scope.isFirstOrder=true;
-                            }
+
                         })
+
+                        $scope.userOrders= userOrders;
+                        console.log("Total user Orders",$scope.userOrders.length);
+
+                        if(userOrders.length==0)
+                        {
+                            $scope.isFirstOrder=true;
+
+                        }else if(userOrders.length >1 && userOrders.length%7==1)
+                        {
+                            $scope.isEighthOrder=true;
+                            var total=0;
+                            for(var i= userOrders.length-6;i<userOrders.length;i++){
+                                total+=userOrders[i].total;
+                            }
+                            $scope.eighthOrderDiscount=total/6;
+                        }else if(userOrders.length>8) {
+
+                        }
                     });
 
                 }
@@ -83,6 +111,27 @@ angular.module('menu')
             //***************Set the Cart in cookies *****************//
             //*******************************************************//
             function setCart(){
+                $scope.cart.subTotal=$scope.subTotal;
+
+                $scope.cart.discount=$scope.discount;
+                $scope.cart.subTotalDiscount=$scope.subTotalDiscount;
+
+                $scope.cart.firstOrderDiscount=$scope.firstOrderDiscount;
+                $scope.cart.subTotalFirstOrderDiscount=$scope.subTotalFirstOrderDiscount;
+
+                $scope.cart.eighthOrderDiscount=$scope.eighthOrderDiscount;
+                $scope.cart.subTotalEigthDiscount=$scope.subTotalEigthDiscount;
+
+                $scope.cart.deliveryFee=$scope.deliveryFee;
+
+
+                if($scope.selectedDeliveryType==1){
+                    $scope.cart.Delivery='Delivery';
+                }else{
+                    $scope.cart.Delivery='Takeaway';
+                }
+                $scope.cart.Total=$scope.Total;
+
                 CartSvc.setCart($scope.cart);
             }
 
@@ -333,7 +382,7 @@ angular.module('menu')
                 calculateTotal();
             };
 
-            $scope.selectedDeliveryType='1';
+
 
 
              $scope.changeDeliveryType = function(deliveryType){
@@ -354,7 +403,12 @@ angular.module('menu')
             $scope.Total=0;
             $scope.deliveryFee=0;
             $scope.subTotalDiscount=0;
+
             $scope.firstOrderDiscount=0;
+            $scope.subTotalFirstOrderDiscount=0;
+            $scope.eighthOrderDiscount=0;
+            $scope.subTotalEigthDiscount=0;
+
             $scope.selectedSpicy=2;
 
             $scope.Total=$scope.subTotal+$scope.deliveryFee;
@@ -434,9 +488,7 @@ angular.module('menu')
                         }
                         //cartItem.Option = option;
                         cartItem.Total=  Qty*item.price; //calculate particular items Total
-                        if($scope.cart.Delivery==""){
-                            $scope.cart.Delivery="Delivery";
-                        }
+
                         $scope.cart.items.push(cartItem); //add to thr cart
                     }else{
                         cartItem=$scope.cart.items[idx];
@@ -445,9 +497,7 @@ angular.module('menu')
                         //cartItem.Spicy=item.spicy;
                         cartItem.Total=  qty*cartItem.Price;
 
-                        if($scope.cart.Delivery==""){
-                            $scope.cart.Delivery="Delivery";
-                        }
+
                     }
 
                     //$scope.cart.push(cartItem);
@@ -461,18 +511,14 @@ angular.module('menu')
                         cartItem.Total=  option.price; //calculate particular items Total
 
                         $scope.cart.items.push(cartItem); //add to thr cart
-                        if($scope.cart.Delivery==""){
-                            $scope.cart.Delivery="Delivery";
-                        }
+
                     }else{
                         cartItem=$scope.cart.items[idx];
                         var qty=parseInt(cartItem.Qty)+1;
                         cartItem.Qty=qty;
                         //cartItem.Spicy=option.spicy;
                         cartItem.Total=  qty*cartItem.Price;
-                        if($scope.cart.Delivery==""){
-                            $scope.cart.Delivery="Delivery";
-                        }
+
                     }
                 }
 
@@ -536,11 +582,20 @@ angular.module('menu')
                     })
                 }
                 $scope.subTotal=$scope.cart.Total;
-                $scope.discount=.20*$scope.subTotal;
-                $scope.subTotalDiscount=$scope.subTotal-$scope.discount;
+
+                if($scope.isEighthOrder) {
+                }else{
+                    $scope.discount = .20 * $scope.subTotal;
+                    $scope.subTotalDiscount = $scope.subTotal - $scope.discount;
+                }
+
                 if($scope.isFirstOrder){
                     $scope.firstOrderDiscount=.20*$scope.subTotalDiscount;
+                    $scope.subTotalFirstOrderDiscount=$scope.subTotalDiscount-$scope.firstOrderDiscount;
                     $scope.Total=$scope.deliveryFee+$scope.subTotal-$scope.discount-$scope.firstOrderDiscount;
+                }else if($scope.isEighthOrder){
+                    $scope.subTotalEigthDiscount=$scope.subTotal-$scope.eighthOrderDiscount;
+                    $scope.Total=$scope.deliveryFee+$scope.subTotal-$scope.discount-$scope.eighthOrderDiscount;
                 }else{
                     $scope.Total=$scope.deliveryFee+$scope.subTotal-$scope.discount;
                 }
