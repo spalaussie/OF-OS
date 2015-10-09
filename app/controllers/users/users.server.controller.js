@@ -13,11 +13,13 @@ var _ = require('lodash'),
  * Update user details
  */
 
-exports.getUserByID = function(req, res, next, id) {
-    User.findById(id).populate('user', 'email').exec(function(err, user) {
+exports.getUserById = function(req, res) {
+    User.findOne(req.query['userId']).populate('user', 'email').exec(function(err, user) {
         if (err) return next(err);
         if (! user) return next(new Error('Failed to load User ' + id));
         req.user = user ;
         next();
     });
 };
+
+
