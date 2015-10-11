@@ -151,20 +151,17 @@ angular.module('menu')
             }
 
             var locationAddr=[];
-            var userDetailsUserId='';
+            var userDetailsId='';
 
             function checkUserDetails(userDetails){
                 if (User.user && !userDetailsExists(userDetails)) {
                     // if userDetails are not present
-                    var firstName = User.user.firstName;
-                    var lastName = User.user.lastName;
-                    var UserName= User.user.username;
                     locationAddr = $scope.cart.Suburb.split(",");
-                    create(firstName, lastName, UserName, locationAddr);
+                    create(User.user, locationAddr);
 
                 }
                 else{
-                    $location.path('userdetails/' + userDetailsUserId+'/edit');
+                    $location.path('userdetails/' + userDetailsId+'/edit');
                 }
             }
 
@@ -184,7 +181,7 @@ angular.module('menu')
                 var i = userDetails.length;
                 while (i--) {
                     if (userDetails[i].user._id === user._id) {
-                        userDetailsUserId=userDetails[i]._id
+                        userDetailsId=userDetails[i]._id
                         return true;
                     }
                 }
@@ -193,12 +190,13 @@ angular.module('menu')
 
 
             // Create new Userdetail for current user
-            function create(firstName,lastName, UserName, locationAddr) {
+            function create(user, locationAddr) {
                 // Create new Userdetail object
                 var userdetail = new Userdetails ({
-                    first_name: firstName,
-                    last_name: lastName,
-                    userName: UserName,
+                    first_name: user.firstName,
+                    last_name: user.lastName,
+                    userName: user.username,
+                    email:user.email,
                     suburb:locationAddr[0],
                     zip:locationAddr[1]
                 });
