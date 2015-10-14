@@ -12,20 +12,5 @@ angular.module('userdetails').controller('ModalInstancePapalCtrl', ['$scope', '$
      // $state.go('home');
       $modalInstance.dismiss();
   };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-
-  $scope.formData      = {};
-  $scope.formData.date = "";
-  $scope.opened        = false;
-
-  //Datepicker
-  $scope.dateOptions = {
-    'year-format': "'yy'",
-    'show-weeks' : false
-  };
-
   }
 ]);

@@ -8,11 +8,10 @@ angular.module('options').controller('OptionsController', ['$scope', '$statePara
 		// check if user is admin
 
 		$scope.isAdmin=function(){
-			if($scope.authentication.user.roles[0]==='admin'){
+			if($scope.authentication.user.roles.indexOf('admin') > -1){
 				return true;
 			}else{
-			return
-				false;
+			return false;
 			}
 		};
 

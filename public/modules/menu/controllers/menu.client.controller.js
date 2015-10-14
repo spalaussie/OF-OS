@@ -50,8 +50,8 @@ angular.module('menu')
                     $scope.userOrders = GetOrders.query().$promise.then(function (orders) {
                         angular.forEach(orders, function (userOrder) {
                             order=initOrder();
-                            if($scope.authentication.user._id===userOrder.user._id &&
-                                userOrder.completed && userOrder.orderno){
+                            if($scope.authentication.user._id===userOrder.user &&
+                                userOrder.accepted && userOrder.orderno){
                                     order._id=userOrder._id;
                                     order.completed = userOrder.completed;
                                     order.orderno=userOrder.orderno;

@@ -6,7 +6,7 @@ angular.module('menuitems').config(['$stateProvider',
 		// Menuitems state routing
 		$stateProvider.
 		state('listMenuitems', {
-			url: '/menuitems:type',
+			url: '/menuitems',
 			templateUrl: 'modules/menuitems/views/list-menuitems.client.view.html'
 		}).
 		state('createMenuitem', {
