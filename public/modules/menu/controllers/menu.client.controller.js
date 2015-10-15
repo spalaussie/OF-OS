@@ -53,7 +53,7 @@ angular.module('menu')
                             if($scope.authentication.user._id===userOrder.user &&
                                 userOrder.accepted && userOrder.orderno){
                                     order._id=userOrder._id;
-                                    order.completed = userOrder.completed;
+                                    //order.completed = userOrder.completed;
                                     order.orderno=userOrder.orderno;
                                     order.total = userOrder.total;
                                     order.transactionId = userOrder.transactionId;
