@@ -38,6 +38,7 @@ angular.module('menu')
             var order={
                 _id: "",
                 completed: false,
+                accepted:false,
                 orderno: 0,
                 total: 0,
                 transactionId: "",
@@ -51,9 +52,10 @@ angular.module('menu')
                         angular.forEach(orders, function (userOrder) {
                             order=initOrder();
                             if($scope.authentication.user._id===userOrder.user &&
-                                userOrder.accepted && userOrder.orderno){
+                                userOrder.completed  && userOrder.accepted && userOrder.orderno){
                                     order._id=userOrder._id;
-                                    //order.completed = userOrder.completed;
+                                    order.completed = userOrder.completed;
+                                    order.accepted = userOrder.accepted;
                                     order.orderno=userOrder.orderno;
                                     order.total = userOrder.total;
                                     order.transactionId = userOrder.transactionId;
@@ -290,12 +292,12 @@ angular.module('menu')
 
 
 
-           // $scope.deliveryTime=getTimeModel(new Date());
-            $scope.deliveryTime=[{id:1,time:'12:30 AM'},
+            $scope.deliveryTime=getTimeModel(new Date());
+           /* $scope.deliveryTime=[{id:1,time:'12:30 AM'},
                                  {id:2,time:'1:30 PM'},
                                  {id:3,time:'2:30 PM'}
                                 ];
-
+            */
 
 
            function getTimeModel(tmpDate){
@@ -303,8 +305,10 @@ angular.module('menu')
                 var endHrs=22;
                 var current= tmpDate==null?new Date():tmpDate;
                 var currMinute=current.getMinutes()
-                startHrs = current.getHours() < startHrs ?startHrs:current.getHours();
-                startHrs = currMinute > 30 ?startHrs+1:startHrs
+               if(startHrs<current.getHours()) {
+                   startHrs = current.getHours() < startHrs ? startHrs : current.getHours();
+                   startHrs = currMinute > 30 ? startHrs + 1 : startHrs
+               }
                 var timeList= new Array();
                 var id=1;
                 for(var i=startHrs;i<endHrs;i++){

@@ -37,20 +37,6 @@
                                                   <div class="details">
                                                       <p><strong>{{item.name}} <span ng-show="item.isSpicy"><img  ng-src="modules/core/template/img/content/mild.png" alt="spicy"> </span>
                                                       </strong></p>
-                                                      <!--<ul class="share-this list-inline text-right">
-                                                          <li><a href="#">Share</a>
-                                                              <ul class="list-inline">
-                                                                  <li><a href="#"><i class="fa fa-facebook-square"></i></a>
-                                                                  </li>
-                                                                  <li><a href="#"><i class="fa fa-twitter-square"></i></a>
-                                                                  </li>
-                                                                  <li><a href="#"><i class="fa fa-google-plus-square"></i></a>
-                                                                  </li>
-                                                                  <li><a href="#"><i class="fa fa-pinterest-square"></i></a>
-                                                                  </li>
-                                                              </ul>
-                                                          </li>
-                                                      </ul>-->
                                                       <p class="m-with-details"><strong>Description:</strong><br>{{item.description}}</p>
                                                       <p class="for-list">{{item.description}}</p>
                                                       <div class="pull-right" style="right: 0;bottom: 0;" ng-show="item.spicy">
@@ -103,27 +89,6 @@
                                                   </div> <!-- end .qty-cart -->
                                               </div> <!-- end .visible-option -->
 
-                                              <!--<div class="dropdown-option clearfix" >
-                                                  <div class="dropdown-details">
-
-                                                      <form class="default-form">
-                                                          <div class="general-info cart-qty">
-                                                              <h5>Please Select Your Option</h5>
-                                                              <ul class="list-unstyled ">
-                                                                  <li ng-repeat="optionItem in item.menuOptions  | orderBy: 'price'">
-                                                                      <span class="value"><strong>{{optionItem.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{optionItem.price| currency}}</strong> </span>
-                                                                      <span class="result">
-                                                                          <button class="btn btn-default-red" ng-click="addItem(0,item,optionItem)">
-                                                                                    <i class="fa fa-shopping-cart"></i>
-                                                                          </button>
-                                                                      </span>
-                                                                  </li>
-                                                              </ul>
-                                                          </div>
-                                                      </form>
-                                                  </div>
-                                                  &lt;!&ndash;end .dropdown-details&ndash;&gt;
-                                              </div>-->
                                               <!--end .dropdown-option-->
                                           </div>
                                           <!-- end .all-details -->
@@ -230,14 +195,14 @@
                                     <p class="price-total">{{subTotal|currency}}</p>
                                 </li>
                                 <!------------ Online Ordering Discount----------------->
-                                <li ng-show="!isEighthOrder">
+                                <li ng-show="!isEighthOrder && authentication.user">
 
                                     <p style="line-height: 20px">
                                             <span style="margin-left: 25px;display: block">Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> Online Ordering</span></span>
                                     </p>
                                     <p class="price-total">({{discount|currency}})</p>
                                 </li>
-                                <li ng-show="!isEighthOrder">
+                                <li ng-show="!isEighthOrder && authentication.user">
                                     <!-- list for total price-->
                                     <p><strong>Sub Total after discount</strong></p>
                                     <p class="price-total">{{subTotalDiscount|currency}}</p>
@@ -246,7 +211,7 @@
 
                                 <!------------ First Online Order Discount----------------->
 
-                                <li ng-show="isFirstOrder">
+                                <li ng-show="isFirstOrder || !authentication.user">
                                     <!-- list for total price-->
                                     <p style="line-height: 20px">
                                         <span style="margin-left: 25px;display: block">Welcome Discount 20% <br /> <span style="font-weight: bold;color: #e00000 "> First Online Order</span></span>
